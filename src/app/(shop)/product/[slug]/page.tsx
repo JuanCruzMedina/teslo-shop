@@ -1,4 +1,5 @@
 import { buttonStyles } from "@/app/styles";
+import { QuantitySelector } from "@/components/products/quantity-selector/QuantitySelector";
 import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
 import { titleFont } from "@/config/fonts";
 import { Product } from "@/interfaces/product.interface";
@@ -43,6 +44,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           selectedSize={product.sizes[0]}
           availableSizes={product.sizes}
         />
+        <QuantitySelector quantity={1} />
         <button className={`${buttonStyles.primary} my-6`}>Add to Cart</button>
         <h3 className="font-bold text-sm">Description</h3>
         <p className="font-light">{product.description}</p>
