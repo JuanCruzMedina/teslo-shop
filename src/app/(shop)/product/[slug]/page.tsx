@@ -1,4 +1,5 @@
 import { buttonStyles } from "@/app/styles";
+import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
 import { titleFont } from "@/config/fonts";
 import { Product } from "@/interfaces/product.interface";
 import { initialData } from "@/seed/seed";
@@ -38,6 +39,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {product.title}
         </h1>
         <p className="text-lg mb-5">${product.price}</p>
+        <SizeSelector
+          selectedSize={product.sizes[0]}
+          availableSizes={product.sizes}
+        />
         <button className={`${buttonStyles.primary} my-6`}>Add to Cart</button>
         <h3 className="font-bold text-sm">Description</h3>
         <p className="font-light">{product.description}</p>
