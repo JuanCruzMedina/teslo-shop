@@ -1,17 +1,25 @@
 import { buttonStyles } from "@/app/styles";
 import { QuantitySelector } from "@/components/products/quantity-selector/QuantitySelector";
 import { Title } from "@/components/ui/title/Title";
+import { Product } from "@/interfaces/product.interface";
 import { initialData } from "@/seed/seed";
 import Image from "next/image";
 import Link from "next/link";
-
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-];
+import { redirect } from "next/navigation";
 
 export default function CartPage() {
+  const getProductsInCart = () => {
+    return [
+      initialData.products[0],
+      initialData.products[1],
+      initialData.products[2],
+    ] as Product[];
+  };
+  const productsInCart = getProductsInCart();
+  if (productsInCart.length === 0) {
+    redirect("/empty");
+  }
+
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
       <div className="flex flex-col w-[1000px]">
