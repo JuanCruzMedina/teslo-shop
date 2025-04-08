@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Swiper as SwiperObject } from "swiper";
 import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./slideshow.css";
@@ -23,12 +25,12 @@ export default function ProductSlideShow({
   return (
     <div className={className}>
       <Swiper
-        // style={
-        //   {
-        //     "--swiper-navigation-color": "#fff",
-        //     "--swiper-pagination-color": "#fff",
-        //   } as React.CSSProperties
-        // }
+        style={
+          {
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          } as React.CSSProperties
+        }
         spaceBetween={10}
         navigation={true}
         autoplay={{ delay: 3500 }}
