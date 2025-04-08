@@ -1,10 +1,10 @@
 import { buttonStyles } from "@/app/styles";
 import { QuantitySelector } from "@/components/products/quantity-selector/QuantitySelector";
 import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
+import ProductSlideShow from "@/components/products/slide-show/ProductSlideShow";
 import { titleFont } from "@/config/fonts";
 import { Product } from "@/interfaces/product.interface";
 import { initialData } from "@/seed/seed";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 interface ProductPageProps {
   params: {
@@ -26,14 +26,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="mt-5 mb-20 grid md:grid-cols-3 gap-3">
+    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
       <div className="col-span-1 md:col-span-2">
-        <Image
-          src={`/products/${product.images[0]}`}
-          alt={product.title}
-          width={800}
-          height={800}
-        ></Image>
+        <ProductSlideShow images={product.images} title={product.title} />
       </div>
       <div className="col-span-1 px-5">
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
