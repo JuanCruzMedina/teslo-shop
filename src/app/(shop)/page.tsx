@@ -1,15 +1,29 @@
+import { getPaginatedProductWithImages } from "@/actions/products/product-pagination";
 import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
 import { Title } from "@/components/ui/title/Title";
-import { Product } from "@/interfaces/product.interface";
-import { initialData } from "@/seed/seed";
+import { redirect } from "next/navigation";
 
-const products = initialData.products;
+interface Props {
+  searchParams: {
+    page?: string;
+  };
+}
 
-export default function Home() {
+export default async function Home({ searchParams }: Props) {
+  const { page } = await searchParams;
+  const { products } = await getPaginatedProductWithImages({
+    page: Number(page) || 1,
+    take: 12,
+  });
+
+  if (products.length === 0) {
+    redirect("/");
+  }
+
   return (
     <div>
       <Title title={"Shop"} subtitle={"Welcome to the shop!"}></Title>
-      <ProductGrid products={products as Product[]} />
+      <ProductGrid products={products} />
     </div>
   );
 }
