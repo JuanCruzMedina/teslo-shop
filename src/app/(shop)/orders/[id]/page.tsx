@@ -90,7 +90,7 @@ export const PaymentDisplay = () => {
   return (
     <div
       className={clsx(
-        " flex items-center rounded-lg py-2 px-3.5 text-xs fond-bold text-white mb-5",
+        "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
         {
           "bg-red-500": false,
           "bg-green-700": true,
