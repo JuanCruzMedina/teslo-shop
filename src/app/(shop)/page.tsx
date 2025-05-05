@@ -1,5 +1,6 @@
 import { getPaginatedProductWithImages } from "@/actions/products/product-pagination";
 import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
+import { Pagination } from "@/components/ui/pagination/Pagination";
 import { Title } from "@/components/ui/title/Title";
 import { redirect } from "next/navigation";
 
@@ -11,7 +12,7 @@ interface Props {
 
 export default async function Home({ searchParams }: Props) {
   const { page } = await searchParams;
-  const { products } = await getPaginatedProductWithImages({
+  const { products, totalPages } = await getPaginatedProductWithImages({
     page: Number(page) || 1,
     take: 12,
   });
@@ -24,6 +25,7 @@ export default async function Home({ searchParams }: Props) {
     <div>
       <Title title={"Shop"} subtitle={"Welcome to the shop!"}></Title>
       <ProductGrid products={products} />
+      <Pagination totalPages={totalPages} />
     </div>
   );
 }
