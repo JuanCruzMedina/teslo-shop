@@ -7,26 +7,19 @@ interface PaginationOptions {
   take: number;
   gender?: Gender;
 }
+export const getPaginatedProductWithImages = async ({
+  page = 1,
+  take = 12,
+  gender,
+}: PaginationOptions) => {
+  if (isNaN(Number(page))) page = 1;
+  if (page < 1) page = 1;
 
-export const getPaginatedProductWithImages = async (
-  { page, take, gender }: PaginationOptions = { page: 1, take: 12, gender: undefined }
-) => {
-  if (isNaN(Number(page)) || isNaN(Number(take))) {
-    throw new Error("Invalid pagination parameters");
-  }
-  if (page < 1) {
-    page = 1;
-  }
-  if (take < 1) {
-    take = 12;
-  }
   try {
+    // 1. Obtener los productos
     const products = await prisma.product.findMany({
-      take,
+      take: take,
       skip: (page - 1) * take,
-      where: {
-        gender: gender ? (gender as Gender) : undefined,
-      },
       include: {
         images: {
           take: 2,
@@ -35,20 +28,30 @@ export const getPaginatedProductWithImages = async (
           },
         },
       },
+      where: {
+        gender: gender,
+      },
     });
-    const totalCount = await prisma.product.count();
+
+    // 2. Obtener el total de páginas
+    // todo:
+    const totalCount = await prisma.product.count({
+      where: {
+        gender: gender,
+      },
+    });
+
     const totalPages = Math.ceil(totalCount / take);
 
     return {
       currentPage: page,
-      totalPages,
+      totalPages: totalPages,
       products: products.map((product) => ({
         ...product,
         images: product.images.map((image) => image.url),
       })),
     };
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to fetch products");
+  } catch {
+    throw new Error("No se pudo cargar los productos");
   }
 };
