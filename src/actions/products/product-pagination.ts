@@ -1,13 +1,15 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { Gender } from "../../../generated/prisma/client";
 
 interface PaginationOptions {
   page: number;
   take: number;
+  gender?: Gender;
 }
 
 export const getPaginatedProductWithImages = async (
-  { page, take }: PaginationOptions = { page: 1, take: 12 }
+  { page, take, gender }: PaginationOptions = { page: 1, take: 12, gender: undefined }
 ) => {
   if (isNaN(Number(page)) || isNaN(Number(take))) {
     throw new Error("Invalid pagination parameters");
@@ -22,6 +24,9 @@ export const getPaginatedProductWithImages = async (
     const products = await prisma.product.findMany({
       take,
       skip: (page - 1) * take,
+      where: {
+        gender: gender ? (gender as Gender) : undefined,
+      },
       include: {
         images: {
           take: 2,
