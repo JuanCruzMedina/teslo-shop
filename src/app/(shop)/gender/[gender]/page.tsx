@@ -9,12 +9,8 @@ import { redirect } from "next/navigation";
 import { Gender } from "../../../../../generated/prisma/client";
 
 interface GenderPageProps {
-  params: {
-    gender: string;
-  };
-  searchParams: {
-    page?: string;
-  };
+  params: Promise<{ gender: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export default async function GenderPage({

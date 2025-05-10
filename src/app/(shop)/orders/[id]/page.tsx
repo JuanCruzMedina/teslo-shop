@@ -1,8 +1,7 @@
+import { PaymentDisplay } from "@/components/orders/PaymentDisplay";
 import { Title } from "@/components/ui/title/Title";
 import { initialData } from "@/seed/seed";
-import clsx from "clsx";
 import Image from "next/image";
-import { IoCartOutline } from "react-icons/io5";
 
 const productsInCart = [
   initialData.products[0],
@@ -11,9 +10,9 @@ const productsInCart = [
 ];
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function OrderPage({ params }: Props) {
@@ -85,21 +84,3 @@ export default async function OrderPage({ params }: Props) {
     </div>
   );
 }
-
-export const PaymentDisplay = () => {
-  return (
-    <div
-      className={clsx(
-        "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-        {
-          "bg-red-500": false,
-          "bg-green-700": true,
-        }
-      )}
-    >
-      <IoCartOutline size={30} />
-      {/* <span className="mx-2">Pending payment</span> */}
-      <span className="mx-2 font-bold">Paid</span>
-    </div>
-  );
-};

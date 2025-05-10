@@ -14,7 +14,7 @@ async function seedDatabase() {
     const categoriesData = categories.map((name) => ({ name }));
 
     // Create categories
-    await prisma.category.createMany({ data: categoriesData as any[] });
+    await prisma.category.createMany({ data: categoriesData });
     console.log("Categories seeded");
 
     // Create products

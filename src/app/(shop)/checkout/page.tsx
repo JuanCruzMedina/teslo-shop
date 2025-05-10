@@ -74,7 +74,7 @@ export default function CheckoutPage() {
             <div className="mt-5 mb-2 w-full">
               <div className="mb-5">
                 <span className="text-xs">
-                  By clicking "Order", you agree to our{" "}
+                  By clicking &quot;Order&quot;, you agree to our{" "}
                   <Link href="/terms" className="underline">
                     Terms and Conditions
                   </Link>{" "}

@@ -13,7 +13,10 @@ export default function CartPage() {
       initialData.products[0],
       initialData.products[1],
       initialData.products[2],
-    ] as Product[];
+    ].map((product, index) => ({
+      ...product,
+      id: `product-${index}`, // Add a unique id for each product
+    })) as Product[]; // TODO: Replace with actual cart data
   };
   const productsInCart = getProductsInCart();
   if (productsInCart.length === 0) {

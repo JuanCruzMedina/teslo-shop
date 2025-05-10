@@ -4,24 +4,21 @@ import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
 import ProductMobileSlideShow from "@/components/products/slide-show/ProductMobileSlideShow";
 import ProductSlideShow from "@/components/products/slide-show/ProductSlideShow";
 import { titleFont } from "@/config/fonts";
-import { Product } from "@/interfaces/product.interface";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 interface ProductPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 function getProductBySlug(slug: string) {
   const product = initialData.products.find((product) => product.slug === slug);
-  return product as Product;
+  return product; // TODO: Replace with actual product data
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   console.log("slug", slug);
-  const product: Product = getProductBySlug(slug);
+  const product = getProductBySlug(slug);
   if (!product) {
     notFound();
   }
