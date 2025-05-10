@@ -1,24 +1,21 @@
+export const revalidate = 604800; // 7 days
+
+import { getProductBySlug } from "@/actions/products/get-product-by-slug";
 import { buttonStyles } from "@/app/styles";
 import { QuantitySelector } from "@/components/products/quantity-selector/QuantitySelector";
 import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
 import ProductMobileSlideShow from "@/components/products/slide-show/ProductMobileSlideShow";
 import ProductSlideShow from "@/components/products/slide-show/ProductSlideShow";
 import { titleFont } from "@/config/fonts";
-import { initialData } from "@/seed/seed";
+
 import { notFound } from "next/navigation";
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-function getProductBySlug(slug: string) {
-  const product = initialData.products.find((product) => product.slug === slug);
-  return product; // TODO: Replace with actual product data
-}
-
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  console.log("slug", slug);
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) {
     notFound();
   }
