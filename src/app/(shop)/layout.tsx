@@ -2,6 +2,14 @@ import { SideBar } from "@/components/side-bar/SideBar";
 import { Footer } from "@/components/ui/footer/Footer";
 import { TopMenu } from "@/components/ui/top-menu/TopMenu";
 
+export const metadata = {
+  title: {
+    default: "Teslo | Shop",
+    template: "%s - Teslo | Shop",
+  },
+  description: "Shop page of Teslo",
+};
+
 export default function ShopLayout({
   children,
 }: {

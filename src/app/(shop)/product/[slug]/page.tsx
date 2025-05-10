@@ -6,11 +6,32 @@ import { QuantitySelector } from "@/components/products/quantity-selector/Quanti
 import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
 import ProductMobileSlideShow from "@/components/products/slide-show/ProductMobileSlideShow";
 import ProductSlideShow from "@/components/products/slide-show/ProductSlideShow";
+import { StockLabel } from "@/components/products/stock-label/StockLabel";
 import { titleFont } from "@/config/fonts";
+import { Metadata } from "next";
 
 import { notFound } from "next/navigation";
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const slug = (await params).slug;
+
+  // fetch post information
+  const product = await getProductBySlug(slug);
+
+  return {
+    title: product?.title ?? "Product not found",
+    description: product?.description ?? "No description available",
+    openGraph: {
+      title: product?.title ?? "Product not found",
+      description: product?.description ?? "No description available",
+      images: [{ url: `products/${product?.images[1]}` }],
+    },
+  };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -40,6 +61,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
+        <StockLabel slug={product.slug} />
         <p className="text-lg mb-5">${product.price}</p>
         <SizeSelector
           selectedSize={product.sizes[0]}
