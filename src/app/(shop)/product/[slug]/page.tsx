@@ -1,9 +1,6 @@
 export const revalidate = 604800; // 7 days
 
 import { getProductBySlug } from "@/actions/products/get-product-by-slug";
-import { buttonStyles } from "@/app/styles";
-import { QuantitySelector } from "@/components/products/quantity-selector/QuantitySelector";
-import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
 import ProductMobileSlideShow from "@/components/products/slide-show/ProductMobileSlideShow";
 import ProductSlideShow from "@/components/products/slide-show/ProductSlideShow";
 import { StockLabel } from "@/components/products/stock-label/StockLabel";
@@ -11,6 +8,7 @@ import { titleFont } from "@/config/fonts";
 import { Metadata } from "next";
 
 import { notFound } from "next/navigation";
+import { AddToCart } from "./ui/AddToCart";
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -63,12 +61,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </h1>
         <StockLabel slug={product.slug} />
         <p className="text-lg mb-5">${product.price}</p>
-        <SizeSelector
-          selectedSize={product.sizes[0]}
-          availableSizes={product.sizes}
-        />
-        <QuantitySelector quantity={1} />
-        <button className={`${buttonStyles.primary} my-6`}>Add to Cart</button>
+
+        <AddToCart product={product} />
+
         <h3 className="font-bold text-sm">Description</h3>
         <p className="font-light">{product.description}</p>
       </div>
