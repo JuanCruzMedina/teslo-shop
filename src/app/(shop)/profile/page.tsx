@@ -16,7 +16,8 @@ export const ProfilePage = async () => {
         <p>Name: {session.user.name}</p>
         <p>Image: {session.user.image}</p>
         <p>Id: {session.user.id}</p>
-        <div>{JSON.stringify(session.user)}</div>
+        <p>Role: {session.user.role}</p>
+        <div>{JSON.stringify(session.user.role)}</div>
       </div>
     </>
   );
