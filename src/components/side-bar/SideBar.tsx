@@ -1,4 +1,5 @@
 "use client";
+import { logout } from "@/actions/auth/logout";
 import { useUiStore } from "@/store/ui/ui-store";
 import clsx from "clsx";
 import Link from "next/link";
@@ -66,13 +67,17 @@ export const SideBar = () => {
         <SideBarItem
           icon={<IoLogInOutline size={30} />}
           text="Login"
-          link="/"
+          link="/auth/login"
         />
-        <SideBarItem
-          icon={<IoLogOutOutline size={30} />}
-          text="Logout"
-          link="/"
-        />
+
+        <button
+          className="flex w-full items-center p-2 mt-10 hover:bg-gray-100 rounded transition-all"
+          onClick={() => logout()}
+        >
+          {<IoLogOutOutline size={30} />}
+          <span className="ml-3 text-xl">Logout</span>
+        </button>
+
         <div className="w-full h-px bg-gray-200 my-10"></div>
         <SideBarItem
           icon={<IoShirtOutline size={30} />}

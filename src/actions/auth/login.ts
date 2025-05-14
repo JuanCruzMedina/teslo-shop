@@ -8,8 +8,12 @@ export async function authenticate(
     formData: FormData,
 ) {
     try {
-        await signIn('credentials', formData);
-    } catch {
+        await signIn('credentials', {
+            redirect: false,
+            ...Object.fromEntries(formData.entries()),
+        });
+    } catch (error) {
+        console.error("Error during authentication", error);
         return "Invalid credentials.";
     }
 }
