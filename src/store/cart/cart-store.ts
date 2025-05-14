@@ -8,6 +8,12 @@ interface State {
     getTotalItems: () => number;
     updateProductQuantity: (cartProduct: CartProduct, quantity: number) => void;
     removeProductFromCart: (cartProduct: CartProduct) => void;
+    getSummaryInformation: () => {
+        numberOfProducts: number;
+        subtotal: number;
+        taxes: number;
+        total: number;
+    };
 }
 
 export const useCartStore = create<State>()(
@@ -59,6 +65,21 @@ export const useCartStore = create<State>()(
                         (item) => !(item.id === cartProduct.id && item.size === cartProduct.size)
                     ),
                 });
+            },
+
+            getSummaryInformation() {
+                const { cart } = get();
+                const numberOfProducts = cart.reduce((total, item) => total + item.quantity, 0);
+                const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+                const taxes = subtotal * 0.16;
+                const total = subtotal + taxes;
+
+                return {
+                    numberOfProducts,
+                    subtotal,
+                    taxes,
+                    total,
+                };
             },
 
         }),

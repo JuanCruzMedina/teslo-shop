@@ -1,27 +1,10 @@
+import { ProductsInCart } from "@/app/(shop)/cart/ui/ProductsInCart";
 import { buttonStyles } from "@/app/styles";
-import { ProductsInCart } from "@/components/ui/ProductsInCart";
 import { Title } from "@/components/ui/title/Title";
-import { Product } from "@/interfaces/product.interface";
-import { initialData } from "@/seed/seed";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { OrderSummary } from "./ui/OrderSummary";
 
 export default function CartPage() {
-  const getProductsInCart = () => {
-    return [
-      initialData.products[0],
-      initialData.products[1],
-      initialData.products[2],
-    ].map((product, index) => ({
-      ...product,
-      id: `product-${index}`, // Add a unique id for each product
-    })) as Product[]; // TODO: Replace with actual cart data
-  };
-  const productsInCart = getProductsInCart();
-  if (productsInCart.length === 0) {
-    redirect("/empty");
-  }
-
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
       <div className="flex flex-col w-[1000px]">
@@ -38,16 +21,7 @@ export default function CartPage() {
 
           <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
             <h2 className="text-2xl mb-2">Order summary</h2>
-            <div className="grid grid-cols-2">
-              <span>Number of products</span>
-              <span className="text-right">3 articles</span>
-              <span>Subtotal</span>
-              <span className="text-right">$99.99</span>
-              <span>Taxes</span>
-              <span className="text-right">$9.99</span>
-              <span className="mt-5 text-2xl">Total</span>
-              <span className="mt-5 text-2xl text-right">$109.98</span>
-            </div>
+            <OrderSummary />
             <div>
               <Link
                 href="/checkout/address"
