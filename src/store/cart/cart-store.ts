@@ -6,6 +6,8 @@ interface State {
     cart: CartProduct[];
     addProductToCart: (product: CartProduct) => void;
     getTotalItems: () => number;
+    updateProductQuantity: (cartProduct: CartProduct, quantity: number) => void;
+    removeProductFromCart: (cartProduct: CartProduct) => void;
 }
 
 export const useCartStore = create<State>()(
@@ -38,6 +40,27 @@ export const useCartStore = create<State>()(
                 const { cart } = get();
                 return cart.reduce((total, item) => total + item.quantity, 0);
             },
+
+            updateProductQuantity: (cartProduct: CartProduct, quantity: number) => {
+                const { cart } = get();
+                set({
+                    cart: cart.map((item) =>
+                        item.id === cartProduct.id && item.size === cartProduct.size
+                            ? { ...item, quantity }
+                            : item
+                    ),
+                });
+            },
+
+            removeProductFromCart: (cartProduct: CartProduct) => {
+                const { cart } = get();
+                set({
+                    cart: cart.filter(
+                        (item) => !(item.id === cartProduct.id && item.size === cartProduct.size)
+                    ),
+                });
+            },
+
         }),
         {
             name: "cart-storage",

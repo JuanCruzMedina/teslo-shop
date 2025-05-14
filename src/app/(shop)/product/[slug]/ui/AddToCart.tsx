@@ -21,6 +21,8 @@ export const AddToCart = ({ product }: Props) => {
   const addToCart = () => {
     setPosted(true);
 
+    if (!size) return;
+
     const cartItem: CartProduct = {
       id: product.id,
       quantity,
