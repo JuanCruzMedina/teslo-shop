@@ -2,13 +2,13 @@
 import { authenticate } from "@/actions/auth/login";
 import { buttonStyles } from "@/app/styles";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 import { BsExclamationCircle } from "react-icons/bs";
 
 export default function LoginForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  // const searchParams = useSearchParams();
+  // const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined
@@ -29,7 +29,7 @@ export default function LoginForm() {
         type="password"
       />
 
-      <input type="hidden" name="redirectTo" value={callbackUrl} />
+      {/* <input type="hidden" name="redirectTo" value={callbackUrl} /> */}
       <button
         type="submit"
         className={isPending ? buttonStyles.disabled : buttonStyles.primary}

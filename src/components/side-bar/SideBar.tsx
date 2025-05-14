@@ -56,7 +56,7 @@ export const SideBar = () => {
         <SideBarItem
           icon={<IoPersonOutline size={30} />}
           text="Profile"
-          link="/"
+          link="/profile"
         />
         <SideBarItem
           icon={<IoTicketOutline size={30} />}
@@ -103,10 +103,12 @@ const SideBarItem = ({
   text: string;
   link: string;
 }) => {
+  const closeSideMenu = useUiStore((state) => state.closeSideMenu);
   return (
     <Link
       href={link}
       className="flex items-center p-2 mt-10 hover:bg-gray-100 rounded transition-all"
+      onClick={() => closeSideMenu()}
     >
       {icon}
       <span className="ml-3 text-xl">{text}</span>
