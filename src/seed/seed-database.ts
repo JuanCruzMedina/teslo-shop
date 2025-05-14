@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma";
+import prisma from "../lib/prisma";
 import { initialData } from "./seed";
 
 
@@ -6,13 +6,17 @@ async function seedDatabase() {
     console.log("Seeding database...");
     // Delete existing data
     await Promise.all([
+        await prisma.user.deleteMany(),
         await prisma.productImage.deleteMany(),
         await prisma.product.deleteMany(),
         await prisma.category.deleteMany(),
     ]);
-    const { categories, products } = initialData;
-    const categoriesData = categories.map((name) => ({ name }));
+    const { categories, products, users } = initialData;
+    await prisma.user.createMany({
+        data: users
+    });
 
+    const categoriesData = categories.map((name) => ({ name }));
     // Create categories
     await prisma.category.createMany({ data: categoriesData });
     console.log("Categories seeded");
@@ -20,7 +24,7 @@ async function seedDatabase() {
     // Create products
     const categoriesDb = await prisma.category.findMany();
     console.log("Categories fetched from DB", categoriesDb);
-    const categoriesMap = categoriesDb.reduce((map, category) => {
+    const categoriesMap = categoriesDb.reduce((map: Record<string, string>, category: { name: string; id: string }) => {
         map[category.name.toLocaleLowerCase()] = category.id;
         return map;
     }, {} as Record<string, string>);
