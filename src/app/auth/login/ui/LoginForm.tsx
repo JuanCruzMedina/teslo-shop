@@ -8,7 +8,7 @@ import { BsExclamationCircle } from "react-icons/bs";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined
@@ -16,10 +16,18 @@ export default function LoginForm() {
   return (
     <form action={formAction} className="flex flex-col">
       <label htmlFor="email">Email</label>
-      <input className="px-5 py-2 bg-gray-100 rounded mb-5" type="email" />
+      <input
+        className="px-5 py-2 bg-gray-100 rounded mb-5"
+        name="email"
+        type="email"
+      />
 
       <label htmlFor="password">Password</label>
-      <input className="px-5 py-2 bg-gray-100 rounded mb-5" type="password" />
+      <input
+        className="px-5 py-2 bg-gray-100 rounded mb-5"
+        name="password"
+        type="password"
+      />
 
       <input type="hidden" name="redirectTo" value={callbackUrl} />
       <button

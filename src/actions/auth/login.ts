@@ -8,10 +8,8 @@ export async function authenticate(
     formData: FormData,
 ) {
     try {
-        console.log('formData', formData); //TODO: remove
         await signIn('credentials', formData);
-    } catch (error) {
-        // console.error('Authentication error:', error); //TODO: remove
+    } catch {
         return "Invalid credentials.";
     }
 }

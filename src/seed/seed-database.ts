@@ -15,6 +15,7 @@ async function seedDatabase() {
     await prisma.user.createMany({
         data: users
     });
+    console.log("Users seeded");
 
     const categoriesData = categories.map((name) => ({ name }));
     // Create categories
