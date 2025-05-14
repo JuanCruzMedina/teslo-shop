@@ -20,4 +20,14 @@ export const buttonStyles = {
         "rounded",
         "transition-all"
     ),
+    disabled: clsx(
+        "bg-gray-600",
+        "hover:bg-gray-800",
+        "text-white",
+        "py-2",
+        "px-4",
+        "rounded",
+        "transition-all",
+        "cursor-not-allowed"
+    ),
 };

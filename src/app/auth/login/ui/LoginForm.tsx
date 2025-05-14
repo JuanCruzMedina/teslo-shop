@@ -32,8 +32,9 @@ export default function LoginForm() {
       <input type="hidden" name="redirectTo" value={callbackUrl} />
       <button
         type="submit"
-        className={buttonStyles.primary}
+        className={isPending ? buttonStyles.disabled : buttonStyles.primary}
         aria-disabled={isPending}
+        disabled={isPending}
       >
         Login
       </button>
