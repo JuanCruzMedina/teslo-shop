@@ -12,8 +12,9 @@ export async function authenticate(
             redirect: false,
             ...Object.fromEntries(formData.entries()),
         });
+        return "Success";
     } catch (error) {
         console.error("Error during authentication", error);
-        return "Invalid credentials.";
+        return "Invalid credentials";
     }
 }
