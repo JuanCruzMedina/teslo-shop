@@ -28,6 +28,6 @@ export const buttonStyles = {
         "px-4",
         "rounded",
         "transition-all",
-        "cursor-not-allowed"
+        "cursor-not-allowed",
     ),
 };
