@@ -81,3 +81,8 @@ model User {
   createdAt     DateTime  @default(now())
   image         String?
 }
+
+model Country {
+  id   String @id
+  name String
+}
