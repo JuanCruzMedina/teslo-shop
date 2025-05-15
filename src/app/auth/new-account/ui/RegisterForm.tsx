@@ -1,8 +1,12 @@
 "use client";
+import { login } from "@/actions/auth/login";
+import { registerUser } from "@/actions/auth/register";
 import { buttonStyles } from "@/app/styles";
 import clsx from "clsx";
 import Link from "next/link";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { BsExclamationCircle } from "react-icons/bs";
 
 type FormInputs = {
   name: string;
@@ -17,11 +21,27 @@ export const RegisterForm = () => {
     formState: { errors },
   } = useForm<FormInputs>();
 
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
+
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const { name, email, password } = data;
-    console.log("Form submitted:", { name, email, password });
+    const registerUserResponse = await registerUser(name, email, password);
+    if (!registerUserResponse.ok) {
+      setErrorMessage(registerUserResponse.error);
+      return;
+    }
+    setErrorMessage(undefined);
+    const loginResponse = await login(email, password);
+    if (!loginResponse.ok) {
+      setErrorMessage(loginResponse.error);
+      return;
+    }
+    setErrorMessage(undefined);
+    window.location.replace("/");
   };
-  console.log(errors);
+
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Full name</label>
@@ -52,6 +72,13 @@ export const RegisterForm = () => {
           required: true,
         })}
       />
+
+      {!!errorMessage && (
+        <div className="flex items-center justify-center my-5">
+          <BsExclamationCircle className="h-5 w-5 text-red-500 mr-2" />
+          <p className="text-sm text-red-500">{errorMessage}</p>
+        </div>
+      )}
 
       <button className={buttonStyles.primary}>Create account</button>
 
