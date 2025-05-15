@@ -2,7 +2,9 @@
 
 import { buttonStyles } from "@/app/styles";
 import { Country } from "@/interfaces/country.interface";
+import { useAddressStore } from "@/store/address/address-store";
 import clsx from "clsx";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 type FormInputs = {
@@ -26,14 +28,23 @@ export const AddressForm = ({ countries }: Props) => {
     register,
     handleSubmit,
     formState: { isValid },
+    reset,
   } = useForm<FormInputs>({
     defaultValues: {
       // TODO: read from db
     },
   });
 
+  const setAddress = useAddressStore((state) => state.setAddress);
+  const address = useAddressStore((state) => state.address);
+  useEffect(() => {
+    if (address?.firstName) {
+      reset(address);
+    }
+  }, [address, reset]);
+
   const onSubmit = (data: FormInputs) => {
-    console.log(data);
+    setAddress(data);
   };
 
   return (
@@ -168,7 +179,6 @@ export const AddressForm = ({ countries }: Props) => {
       <div className="flex flex-col mb-2 sm:mt-10">
         <button
           type="submit"
-          //   className={`${buttonStyles.primary} flex w-full sm:w-1/2 justify-center`}
           disabled={!isValid}
           className={clsx(
             isValid ? buttonStyles.primary : buttonStyles.disabled
