@@ -4,6 +4,9 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import prisma from './lib/prisma';
+
+
+
 export const authConfig = {
     pages: {
         signIn: '/auth/login',
@@ -11,6 +14,18 @@ export const authConfig = {
     },
 
     callbacks: {
+        authorized({ auth, request: { nextUrl } }) {
+            console.log('Authorized callback', { auth, nextUrl });
+            // const isLoggedIn = !!auth?.user;
+            // const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+            // if (isOnDashboard) {
+            //     if (isLoggedIn) return true;
+            //     return false; // Redirect unauthenticated users to login page
+            // } else if (isLoggedIn) {
+            //     return Response.redirect(new URL('/dashboard', nextUrl));
+            // }
+            return true;
+        },
         jwt({ token, user }) {
             console.log('JWT callback', { token, user });
             if (user) {
