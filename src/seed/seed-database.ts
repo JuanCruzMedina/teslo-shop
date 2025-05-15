@@ -7,6 +7,7 @@ async function seedDatabase() {
     console.log("Seeding database...");
     // Delete existing data
     await Promise.all([
+        await prisma.userAddress.deleteMany(),
         await prisma.country.deleteMany(),
         await prisma.user.deleteMany(),
         await prisma.productImage.deleteMany(),
