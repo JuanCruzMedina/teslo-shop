@@ -8,7 +8,7 @@ import { Country } from "@/interfaces/country.interface";
 import { useAddressStore } from "@/store/address/address-store";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
