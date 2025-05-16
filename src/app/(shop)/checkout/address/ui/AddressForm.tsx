@@ -61,7 +61,6 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
       setUserAddress(addressData, session!.user.id);
     } else {
       deleteUserAddress(session!.user.id);
-      setAddress(undefined);
     }
     router.push("/checkout");
   };

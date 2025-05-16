@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface State {
-    address?: {
+    address: {
         firstName: string;
         lastName: string;
         address: string;

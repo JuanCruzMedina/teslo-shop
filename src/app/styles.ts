@@ -22,7 +22,7 @@ export const buttonStyles = {
     ),
     disabled: clsx(
         "bg-gray-600",
-        "hover:bg-gray-800",
+        // "hover:bg-gray-800",
         "text-white",
         "py-2",
         "px-4",
