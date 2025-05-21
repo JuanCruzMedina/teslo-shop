@@ -14,11 +14,13 @@ export const PlaceOrder = () => {
   const router = useRouter();
 
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState("");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const { getSummaryInformation } = useCartStore();
   const address = useAddressStore((state) => state.address);
   const productsInCart = useCartStore((state) => state.cart);
+  const clearCart = useCartStore((state) => state.clearCart);
 
   useEffect(() => {
     setLoaded(true);
@@ -31,15 +33,16 @@ export const PlaceOrder = () => {
       quantity: product.quantity,
       size: product.size,
     }));
-    const { ok, orderId } = await placeOrder(productsToOrder, address);
-    setIsPlacingOrder(false);
+    const response = await placeOrder(productsToOrder, address);
 
-    if (ok) {
-      console.log("orderId", orderId);
-      router.push(`/orders/${orderId}`);
+    if (!response.ok) {
+      setIsPlacingOrder(false);
+      setError(response.message);
       return;
     }
-    alert("Error placing order");
+
+    clearCart();
+    router.replace("/orders/" + response.order?.id);
   };
 
   if (!loaded) return <p>Loading...</p>;
@@ -93,6 +96,13 @@ export const PlaceOrder = () => {
               </Link>
             </span>
           </div>
+
+          {error && (
+            <div className="mb-5">
+              <span className="text-red-500 text-sm">{error}</span>
+            </div>
+          )}
+
           <button
             onClick={onPlaceOrder}
             disabled={isPlacingOrder}

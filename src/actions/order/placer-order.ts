@@ -77,7 +77,7 @@ export const placeOrder = async (productsToOrder: ProductToOrder[], userAddress:
             // check negative stock
             updatedProducts.forEach((product) => {
                 if (product.inStock < 0) {
-                    throw new Error(`Product ${product.id} does not have stock`);
+                    throw new Error(`Product ${product.title} does not have stock`);
                 }
             });
 
@@ -127,6 +127,7 @@ export const placeOrder = async (productsToOrder: ProductToOrder[], userAddress:
 
     } catch (error) {
         console.error("Error placing order", error);
+
         return {
             ok: false,
             message: error instanceof Error ? error.message : "An unknown error occurred"

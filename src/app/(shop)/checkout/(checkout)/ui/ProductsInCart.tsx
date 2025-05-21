@@ -1,22 +1,21 @@
 "use client";
 
 import { useCartStore } from "@/store/cart/cart-store";
-import { redirect } from "next/navigation";
 
 import { currencyFormat } from "@/utils/currencyFormat";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export const ProductsInCart = () => {
-  const productsInCart = useCartStore((state) => state.cart);
   const [loaded, setLoaded] = useState(false);
+  const productsInCart = useCartStore((state) => state.cart);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
   if (!loaded) return <p>Loading...</p>;
-  if (productsInCart.length === 0) redirect("/empty");
+  // if (productsInCart.length === 0) redirect("/empty");
 
   return (
     <>
