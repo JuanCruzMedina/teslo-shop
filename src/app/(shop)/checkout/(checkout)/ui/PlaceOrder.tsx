@@ -1,5 +1,6 @@
 "use client";
 
+import { placeOrder } from "@/actions/order/placer-order";
 import { buttonStyles } from "@/app/styles";
 import { useAddressStore } from "@/store/address/address-store";
 import { useCartStore } from "@/store/cart/cart-store";
@@ -25,10 +26,20 @@ export const PlaceOrder = () => {
 
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // TODO: remove this line
+    const productsToOrder = productsInCart.map((product) => ({
+      productId: product.id,
+      quantity: product.quantity,
+      size: product.size,
+    }));
+    const { ok, orderId } = await placeOrder(productsToOrder, address);
     setIsPlacingOrder(false);
-    const orderId = "1111"; // TODO: replace with real order ID
-    router.push(`/orders/${orderId}`);
+
+    if (ok) {
+      console.log("orderId", orderId);
+      router.push(`/orders/${orderId}`);
+      return;
+    }
+    alert("Error placing order");
   };
 
   if (!loaded) return <p>Loading...</p>;

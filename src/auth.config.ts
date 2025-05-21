@@ -15,7 +15,7 @@ export const authConfig = {
 
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
-            console.log('Authorized callback', { auth, nextUrl });
+            //console.log('Authorized callback', { auth, nextUrl });
             // const isLoggedIn = !!auth?.user;
             // const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
             // if (isOnDashboard) {
@@ -27,7 +27,7 @@ export const authConfig = {
             return true;
         },
         jwt({ token, user }) {
-            console.log('JWT callback', { token, user });
+            // console.log('JWT callback', { token, user });
             if (user) {
                 token.data = user;
             }

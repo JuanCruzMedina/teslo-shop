@@ -71,7 +71,7 @@ export const useCartStore = create<State>()(
                 const { cart } = get();
                 const numberOfProducts = cart.reduce((total, item) => total + item.quantity, 0);
                 const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-                const taxes = subtotal * 0.16;
+                const taxes = subtotal * 0.15;
                 const total = subtotal + taxes;
 
                 return {
