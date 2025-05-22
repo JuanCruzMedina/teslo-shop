@@ -1,9 +1,19 @@
 "use client";
 
+import {
+  CreateOrderActions,
+  CreateOrderData,
+} from "@paypal/paypal-js/types/components/buttons";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
-export const PaypalButton = () => {
+interface Props {
+  orderId: string;
+  amount: number;
+}
+
+export const PaypalButton = ({ orderId, amount }: Props) => {
   const [{ isPending }] = usePayPalScriptReducer();
+  const roundedAmount = Math.round(amount * 100) / 100;
 
   if (isPending)
     return (
@@ -12,5 +22,31 @@ export const PaypalButton = () => {
         <div className="h-11 mt-3 bg-gray-300 rounded"></div>
       </div>
     );
-  return <PayPalButtons />;
+  const createOrder = async (
+    data: CreateOrderData,
+    actions: CreateOrderActions
+  ): Promise<string> => {
+    const transactionId = await actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: roundedAmount.toString(),
+          },
+        },
+      ],
+      intent: "CAPTURE",
+    });
+    console.log("Transaction ID:", transactionId);
+    return transactionId;
+  };
+
+  return (
+    <PayPalButtons
+      createOrder={createOrder}
+      onApprove={async (data, actions) => {
+        console.log("Order approved:");
+      }}
+    />
+  );
 };
