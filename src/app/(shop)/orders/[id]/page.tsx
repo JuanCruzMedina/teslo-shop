@@ -1,5 +1,6 @@
 import { getOrderById } from "@/actions/order/get-order-by-id";
 import { PaymentDisplay } from "@/components/orders/PaymentDisplay";
+import { PaypalButton } from "@/components/paypal/PaypalButtons";
 import { Title } from "@/components/ui/title/Title";
 import { currencyFormat } from "@/utils/currencyFormat";
 
@@ -107,7 +108,7 @@ export default async function OrderByIdPage({ params }: Props) {
               </span>
             </div>
             <div className="mt-5 mb-2 w-full">
-              <PaymentDisplay orderIsPaid={order!.isPaid} />
+              <PaypalButton />
             </div>
           </div>
         </div>

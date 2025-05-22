@@ -1,4 +1,4 @@
-import { Provider } from "@/components/provider/Provider";
+import { Providers } from "@/components/provider/Providers";
 import { geistMono, geistSans, inter } from "@/config/fonts";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider>{children}</Provider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
