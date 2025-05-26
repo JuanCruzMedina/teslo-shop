@@ -1,5 +1,6 @@
 "use client";
 
+import { setTransactionId } from "@/actions/payments/set-transaction-id";
 import {
   CreateOrderActions,
   CreateOrderData,
@@ -37,7 +38,11 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
       ],
       intent: "CAPTURE",
     });
-    console.log("Transaction ID:", transactionId);
+    const saveTransactionId = await setTransactionId(orderId, transactionId);
+    if (!saveTransactionId.ok) {
+      throw new Error("Error saving transaction ID");
+    }
+
     return transactionId;
   };
 
@@ -45,7 +50,7 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
     <PayPalButtons
       createOrder={createOrder}
       onApprove={async (data, actions) => {
-        console.log("Order approved:");
+        //console.log("Order approved:");
       }}
     />
   );
