@@ -1,6 +1,7 @@
 "use server";
 
 import { PaypalOrderStatusResponse } from "@/interfaces/paypal.intertface";
+import prisma from "@/lib/prisma";
 
 export const paypalCheckPayment = async (paypalTransactionId: string) => {
     const authToken = await getPaypalBearerToken();
@@ -17,7 +18,17 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
     if (status !== "COMPLETED") {
         return { ok: false, error: "Payment not completed." };
     }
-    // TODO: update order status in the database
+
+    try {
+        await prisma.order.update({
+            where: { id: '8f8e6ef4-ddad-4ad9-97ba-0a57c8bd7e3d' },
+            data: { isPaid: true, paidAt: new Date() },
+        });
+    }
+    catch (error) {
+        console.error("Error updating order status:", error);
+        return { ok: false, error: "Failed to update order status." };
+    }
 }
 
 const getPaypalBearerToken = async (): Promise<string | null> => {
@@ -41,7 +52,7 @@ const getPaypalBearerToken = async (): Promise<string | null> => {
     };
 
     try {
-        const result = await fetch(oauth2Url, requestOptions).then((res) => res.json());
+        const result = await fetch(oauth2Url, { ...requestOptions, cache: "no-store" }).then((res) => res.json());
         const accessToken = result.access_token;
         if (!accessToken) {
             console.error("Access token not found in response:", result);
@@ -67,7 +78,10 @@ const verifyPaypalPayment = async (paypalTransactionId: string, authToken: strin
     };
 
     try {
-        return await fetch(`${paypalOrdersUrl}/${paypalTransactionId}`, requestOptions).then((res) => res.json());
+        return await fetch(`${paypalOrdersUrl}/${paypalTransactionId}`, {
+            ...requestOptions,
+            cache: "no-store"
+        }).then((res) => res.json());
     }
     catch (error) {
         console.error("Error verifying PayPal payment:", error);
