@@ -17,15 +17,12 @@ export default async function OrderByIdPage({ params }: Props) {
   const { id } = await params;
 
   const getOrderResponse = await getOrderById(id);
-  console.log(getOrderResponse);
+
   if (!getOrderResponse.ok) {
     redirect("/");
   }
   const { order } = getOrderResponse;
   const address = order!.OrderAddress;
-
-  console.log(address);
-  console.log(order);
 
   const productsInCart = order?.OrderItem.map((item) => ({
     title: item.product.title,

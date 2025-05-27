@@ -59,8 +59,6 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
       return;
     }
     await paypalCheckPayment(details.id!);
-
-    console.log("Payment completed successfully:", details); // TODO: remove this
   };
   return <PayPalButtons createOrder={createOrder} onApprove={onApprove} />;
 };

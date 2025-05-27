@@ -15,7 +15,6 @@ export const authConfig = {
 
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
-            //console.log('Authorized callback', { auth, nextUrl });
             // const isLoggedIn = !!auth?.user;
             // const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
             // if (isOnDashboard) {
@@ -27,7 +26,7 @@ export const authConfig = {
             return true;
         },
         jwt({ token, user }) {
-            // console.log('JWT callback', { token, user });
+
             if (user) {
                 token.data = user;
             }
@@ -61,7 +60,6 @@ export const authConfig = {
                 const { password, ...userWithoutPassword } = user;
                 const isValidPassword = await bcryptjs.compare(credentialsPassword, password);
                 if (!isValidPassword) return null;
-                console.log('User authenticated successfully', userWithoutPassword);
                 return userWithoutPassword;
             }
         }),
