@@ -33,6 +33,7 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
     const transactionId = await actions.order.create({
       purchase_units: [
         {
+          invoice_id: orderId,
           amount: {
             currency_code: "USD",
             value: roundedAmount.toString(),
@@ -59,7 +60,7 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
     }
     await paypalCheckPayment(details.id!);
 
-    console.log("Payment completed successfully:", details);
+    console.log("Payment completed successfully:", details); // TODO: remove this
   };
   return <PayPalButtons createOrder={createOrder} onApprove={onApprove} />;
 };

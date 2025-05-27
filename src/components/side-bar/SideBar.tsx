@@ -75,7 +75,7 @@ export const SideBar = () => {
             <SideBarItem
               icon={<IoTicketOutline size={30} />}
               text="Orders"
-              link="/"
+              link="/orders"
             />
             <button
               className="flex w-full items-center p-2 mt-10 hover:bg-gray-100 rounded transition-all"
