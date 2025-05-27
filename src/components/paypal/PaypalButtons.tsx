@@ -1,9 +1,12 @@
 "use client";
 
+import { paypalCheckPayment } from "@/actions/payments/paypal-check-payment";
 import { setTransactionId } from "@/actions/payments/set-transaction-id";
 import {
   CreateOrderActions,
   CreateOrderData,
+  OnApproveActions,
+  OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
@@ -38,6 +41,7 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
       ],
       intent: "CAPTURE",
     });
+
     const saveTransactionId = await setTransactionId(orderId, transactionId);
     if (!saveTransactionId.ok) {
       throw new Error("Error saving transaction ID");
@@ -45,13 +49,17 @@ export const PaypalButton = ({ orderId, amount }: Props) => {
 
     return transactionId;
   };
+  const onApprove = async (
+    data: OnApproveData,
+    actions: OnApproveActions
+  ): Promise<void> => {
+    const details = await actions.order?.capture();
+    if (!details) {
+      return;
+    }
+    await paypalCheckPayment(details.id!);
 
-  return (
-    <PayPalButtons
-      createOrder={createOrder}
-      onApprove={async (data, actions) => {
-        //console.log("Order approved:");
-      }}
-    />
-  );
+    console.log("Payment completed successfully:", details);
+  };
+  return <PayPalButtons createOrder={createOrder} onApprove={onApprove} />;
 };

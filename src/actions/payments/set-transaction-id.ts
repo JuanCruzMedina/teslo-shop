@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 
 export const setTransactionId = async (orderId: string, transactionId: string) => {
-
+    console.log("Setting transaction ID:", { orderId, transactionId });
     try {
         const order = await prisma.order.update({
             where: { id: orderId },
