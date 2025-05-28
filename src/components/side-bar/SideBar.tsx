@@ -105,8 +105,8 @@ export const SideBar = () => {
             />
             <SideBarItem
               icon={<IoPeopleOutline size={30} />}
-              text="Users"
-              link="/"
+              text="Manage Users"
+              link="/admin/users"
             />
           </>
         )}
