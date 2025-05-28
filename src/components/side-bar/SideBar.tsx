@@ -95,8 +95,8 @@ export const SideBar = () => {
             <div className="w-full h-px bg-gray-200 my-10"></div>
             <SideBarItem
               icon={<IoShirtOutline size={30} />}
-              text="Products"
-              link="/"
+              text="Manage Products"
+              link="/admin/products"
             />
             <SideBarItem
               icon={<IoTicketOutline size={30} />}
