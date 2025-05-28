@@ -100,8 +100,8 @@ export const SideBar = () => {
             />
             <SideBarItem
               icon={<IoTicketOutline size={30} />}
-              text="Orders"
-              link="/orders"
+              text="All Orders"
+              link="/admin/orders"
             />
             <SideBarItem
               icon={<IoPeopleOutline size={30} />}
