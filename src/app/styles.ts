@@ -30,4 +30,12 @@ export const buttonStyles = {
         "transition-all",
         "cursor-not-allowed",
     ),
+    danger: clsx(
+        "bg-red-600",
+        "hover:bg-red-800",
+        "text-white",
+        "py-2",
+        "px-4",
+        "transition-all"
+    ),
 };

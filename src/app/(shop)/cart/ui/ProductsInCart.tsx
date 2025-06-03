@@ -4,7 +4,7 @@ import { QuantitySelector } from "@/components/products/quantity-selector/Quanti
 import { useCartStore } from "@/store/cart/cart-store";
 import { redirect } from "next/navigation";
 
-import Image from "next/image";
+import { ProductImage } from "@/components/products/product-image/ProductImage";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -29,8 +29,8 @@ export const ProductsInCart = () => {
     <>
       {productsInCart.map((product) => (
         <div key={`${product.slug}-${product.size}`} className="flex mb-5">
-          <Image
-            src={`/products/${product.image}`}
+          <ProductImage
+            src={product.image}
             alt={product.title}
             width={100}
             height={100}

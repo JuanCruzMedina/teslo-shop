@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 
 import { Autoplay, FreeMode, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { ProductImage } from "../product-image/ProductImage";
 import "./slideshow.css";
 
 interface ProductMobileSlideShowProps {
@@ -34,10 +34,10 @@ export default function ProductMobileSlideShow({
       >
         {images.map((image) => (
           <SwiperSlide key={image}>
-            <Image
+            <ProductImage
               width={600}
               height={500}
-              src={`/products/${image}`}
+              src={`${image}`}
               alt={title}
               className="object-fill"
             />

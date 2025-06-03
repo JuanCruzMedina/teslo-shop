@@ -3,10 +3,9 @@
 import { buttonStyles } from "@/app/styles";
 import { QuantitySelector } from "@/components/products/quantity-selector/QuantitySelector";
 import { SizeSelector } from "@/components/products/size-selector/SizeSelector";
-import { CartProduct, Product } from "@/interfaces/product.interface";
+import { CartProduct, Product, Size } from "@/interfaces/product.interface";
 import { useCartStore } from "@/store/cart/cart-store";
 import { useState } from "react";
-import { Size } from "../../../../../../generated/prisma/client";
 
 interface Props {
   product: Product;
