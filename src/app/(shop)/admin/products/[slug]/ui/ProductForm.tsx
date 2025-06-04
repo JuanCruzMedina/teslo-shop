@@ -39,21 +39,15 @@ interface FormInputs {
 
 export const ProductForm = ({ product, categories }: Props) => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { isValid },
-    getValues,
-    setValue,
-    watch,
-  } = useForm<FormInputs>({
-    defaultValues: {
-      ...product,
-      tags: product.tags?.join(", "),
-      sizes: product.sizes || [],
-      images: undefined,
-    },
-  });
+  const { register, handleSubmit, getValues, setValue, watch } =
+    useForm<FormInputs>({
+      defaultValues: {
+        ...product,
+        tags: product.tags?.join(", "),
+        sizes: product.sizes || [],
+        images: undefined,
+      },
+    });
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

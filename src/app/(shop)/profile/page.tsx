@@ -2,7 +2,7 @@ import { auth } from "@/auth.config";
 import { Title } from "@/components/ui/title/Title";
 import { redirect } from "next/navigation";
 
-export const ProfilePage = async () => {
+export default async function ProfilePage() {
   const session = await auth();
 
   if (!session?.user) {
@@ -21,6 +21,4 @@ export const ProfilePage = async () => {
       </div>
     </>
   );
-};
-
-export default ProfilePage;
+}

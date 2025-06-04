@@ -7,8 +7,6 @@ export const getPaginatedOrdersBySessionUser = async () => {
     // TODO: add pagination
     try {
         const session = await auth();
-        const userId = session?.user.id;
-        console.log("Session user ID:", session?.user);
 
         if (session?.user.role !== "admin") {
             return {

@@ -5,8 +5,8 @@ import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
 import { Pagination } from "@/components/ui/pagination/Pagination";
 import { Title } from "@/components/ui/title/Title";
 import { Product } from "@/interfaces/product.interface";
+import { Gender } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { Gender } from "../../../../../generated/prisma/client";
 
 interface GenderPageProps {
   params: Promise<{ gender: string }>;
