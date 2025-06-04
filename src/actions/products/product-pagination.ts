@@ -18,7 +18,7 @@ export const getPaginatedProductWithImages = async ({
   if (page < 1) page = 1;
 
   try {
-    // 1. Obtener los productos
+
     const products = await prisma.product.findMany({
       take: take,
       skip: (page - 1) * take,
@@ -35,8 +35,6 @@ export const getPaginatedProductWithImages = async ({
       },
     });
 
-    // 2. Obtener el total de páginas
-    // todo:
     const totalCount = await prisma.product.count({
       where: {
         gender: gender,
@@ -53,7 +51,8 @@ export const getPaginatedProductWithImages = async ({
         images: product.images.map((image) => image.url),
       })),
     };
-  } catch {
+  } catch (error) {
+    console.error("Error fetching paginated products", error);
     throw new Error("No se pudo cargar los productos");
   }
 };
