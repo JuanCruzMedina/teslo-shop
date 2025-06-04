@@ -38,4 +38,15 @@ export const buttonStyles = {
         "px-4",
         "transition-all"
     ),
+    outlineDanger: clsx(
+        "border",
+        "border-red-600",
+        "text-red-600",
+        "hover:bg-red-600",
+        "hover:text-white",
+        "py-2",
+        "px-4",
+        "rounded",
+        "transition-all"
+    ),
 };

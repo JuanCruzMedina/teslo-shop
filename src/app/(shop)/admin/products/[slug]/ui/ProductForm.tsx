@@ -77,7 +77,6 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append("categoryId", productToSave.categoryId);
 
     if (images) {
-      console.log("Images to upload:", images);
       Array.from(images).forEach((image) => {
         formData.append("images", image);
       });
@@ -202,7 +201,6 @@ export const ProductForm = ({ product, categories }: Props) => {
         {errorMessage && (
           <div className="flex items-center justify-center mt-5">
             <BsExclamationCircle className="h-5 w-5 text-red-500 mr-2" />
-            ``
             <p className="text-sm text-red-500">{errorMessage}</p>
           </div>
         )}
@@ -257,7 +255,7 @@ export const ProductForm = ({ product, categories }: Props) => {
             {...register("images")}
             multiple
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-blue-500 transition"
-            accept="image/png, image/jpeg"
+            // accept="image/png, image/jpeg"
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

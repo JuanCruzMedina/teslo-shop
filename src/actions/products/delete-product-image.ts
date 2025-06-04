@@ -9,7 +9,7 @@ export const deleteProductImage = async (imageId: number, imageUrl: string) => {
         return { ok: false, message: "Cannot delete local images" };
     }
     const imageName = imageUrl.split("/").pop()?.split(".")[0] ?? '';
-    console.log("Deleting image:", imageName);
+
     try {
         await cloudinary.uploader.destroy(imageName);
         const deletedImage = await prisma.productImage.delete({
