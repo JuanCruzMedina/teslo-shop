@@ -1,11 +1,12 @@
 "use client";
 
 import { createOrUpdateProduct } from "@/actions/products/create-update-product";
+import { deleteProductImage } from "@/actions/products/delete-product-image";
 import { buttonStyles } from "@/app/styles";
+import { ProductImage } from "@/components/products/product-image/ProductImage";
 import { Category } from "@/interfaces/category.interface";
 import { Product } from "@/interfaces/product.interface";
 import clsx from "clsx";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -33,7 +34,7 @@ interface FormInputs {
   tags: string;
   gender: "men" | "women" | "kid" | "unisex";
   categoryId: string;
-  // todo: images
+  images?: FileList;
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
@@ -50,7 +51,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       ...product,
       tags: product.tags?.join(", "),
       sizes: product.sizes || [],
-      // todo: handle images
+      images: undefined,
     },
   });
 
@@ -61,8 +62,10 @@ export const ProductForm = ({ product, categories }: Props) => {
   const onSubmit = async (data: FormInputs) => {
     setErrorMessage(null);
     const formData = new FormData();
-    const { ...productToSave } = data;
-    if (product.id) formData.append("id", product.id ?? "");
+    const { images, ...productToSave } = data;
+    if (product.id) {
+      formData.append("id", product.id ?? "");
+    }
     formData.append("title", productToSave.title);
     formData.append("slug", productToSave.slug);
     formData.append("description", productToSave.description);
@@ -73,6 +76,13 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append("gender", productToSave.gender);
     formData.append("categoryId", productToSave.categoryId);
 
+    if (images) {
+      console.log("Images to upload:", images);
+      Array.from(images).forEach((image) => {
+        formData.append("images", image);
+      });
+    }
+
     const {
       ok,
       message,
@@ -82,7 +92,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       setErrorMessage(message || "Error saving product");
       return;
     }
-    router.replace(`/admin/products/${updatedOrCreatedProduct.slug}`);
+    router.replace(`/admin/products/${updatedOrCreatedProduct!.slug}`);
   };
 
   const onSizeChanged = (size: string) => {
@@ -244,6 +254,7 @@ export const ProductForm = ({ product, categories }: Props) => {
           <span className="block text-sm font-semibold mb-2">Photos</span>
           <input
             type="file"
+            {...register("images")}
             multiple
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-blue-500 transition"
             accept="image/png, image/jpeg"
@@ -252,9 +263,9 @@ export const ProductForm = ({ product, categories }: Props) => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {product.productImages?.map((image) => (
             <div key={image.id}>
-              <Image
+              <ProductImage
                 alt={product.title ?? ""}
-                src={`/products/${image.url}`}
+                src={image.url}
                 width={300}
                 height={300}
                 className="rounded-t shadow-md"
@@ -263,6 +274,7 @@ export const ProductForm = ({ product, categories }: Props) => {
               <button
                 type="button"
                 className={`${buttonStyles.danger} w-full rounded-b-xl`}
+                onClick={async () => deleteProductImage(image.id, image.url)}
               >
                 Eliminar
               </button>

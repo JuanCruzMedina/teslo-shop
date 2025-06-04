@@ -1,8 +1,8 @@
 "use server";
 
-import { Product } from "@/interfaces/product.interface";
 import prisma from "@/lib/prisma";
 import { Gender, Size } from "@prisma/client";
+import { v2 as cloudinary } from 'cloudinary';
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -22,7 +22,7 @@ const productSchema = z.object({
 
 
 export const createOrUpdateProduct = async (
-    formData: FormData): Promise<{ ok: boolean; message?: string, product?: Product }> => {
+    formData: FormData) => {
     try {
 
         const data = Object.fromEntries(formData.entries());
@@ -36,9 +36,10 @@ export const createOrUpdateProduct = async (
         const prismaTransaction = await prisma.$transaction(async (tx) => {
 
             const formattedTags = restOfFormData.tags.split(",").map((tag) => tag.trim());
+            let product = null;
             if (productId) {
-                // Update existing product
-                const product = await tx.product.update({
+
+                product = await tx.product.update({
                     where: { id: productId },
                     data: {
                         ...restOfFormData,
@@ -51,22 +52,46 @@ export const createOrUpdateProduct = async (
                     },
                 });
 
-                return product;
+
+            }
+            else {
+                product = await tx.product.create({
+                    data: {
+                        ...restOfFormData,
+                        sizes: {
+                            set: restOfFormData.sizes as Size[]
+                        },
+                        tags: {
+                            set: formattedTags,
+                        },
+                    },
+                });
             }
 
-            const product = await tx.product.create({
-                data: {
-                    ...restOfFormData,
-                    sizes: {
-                        set: restOfFormData.sizes as Size[]
-                    },
-                    tags: {
-                        set: formattedTags,
-                    },
-                },
+            if (formData.has("images")) {
+                const images = await uploadImages(formData.getAll("images") as File[]);
+                if (!images) {
+                    throw new Error("Failed to upload images");
+                }
+                await tx.productImage.createMany({
+                    data: images.map((url) => ({ url, productId: product.id })),
+                });
+            }
+
+            // Después de crear producto e imágenes
+            const productWithImages = await tx.product.findUnique({
+                where: { id: product.id },
+                include: { images: true },
             });
 
-            return product;
+            // Si necesitas solo las URLs:
+            const productResult = {
+                ...productWithImages,
+                images: productWithImages?.images.map(img => img.url) ?? [],
+            };
+
+            // Retorna este objeto
+            return productResult;
         });
 
         revalidatePath("/admin/products");
@@ -79,3 +104,28 @@ export const createOrUpdateProduct = async (
         return { ok: false, message: "An unexpected error occurred while creating/updating the product" };
     }
 };
+
+const uploadImages = async (imageFiles: File[]) => {
+    try {
+        const uploadPromises = imageFiles.map(async (file) => {
+            try {
+                const buffer = await file.arrayBuffer();
+                const base64Image = Buffer.from(buffer).toString('base64'); // Convert ArrayBuffer to Base64 string
+                return await cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`).then(
+                    (res) => res.secure_url
+                );
+            }
+            catch (uploadError) {
+                console.error("Error uploading image to Cloudinary:", uploadError);
+                return null;
+            }
+        });
+        const uploadedImages = await Promise.all(uploadPromises);
+
+        return uploadedImages.filter((url) => url !== null) as string[];
+    }
+    catch (error) {
+        console.log("Error uploading images to Cloudinary:", error);
+        return null;
+    }
+}
